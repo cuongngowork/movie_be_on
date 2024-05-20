@@ -3,15 +3,15 @@ import { handleResponseError } from "../utils/response.js";
 
 export const auth = async (req, res, next) => {
   const { authorization } = req.headers
-  console.log("authorization in auth middlewares", authorization)
+  // console.log("authorization in auth middlewares", authorization)
   if (!authorization) {
     handleResponseError(res, 401, "Invalid authorization")
     return
   }
   const accessToken = authorization.split(" ")[1]
-  console.log("accessToken", accessToken)
+  // console.log("accessToken", accessToken)
   try {
-    console.log("process", process.env.SECRET)
+    // console.log("process", process.env.SECRET)
     const { user } = jwt.verify(accessToken, process.env.SECRET)
     if (!user) {
       handleResponseError(res, 401, "You are not authenticated")
