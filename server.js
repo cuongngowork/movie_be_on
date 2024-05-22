@@ -24,7 +24,7 @@ app.use("/api/auth", userRoutes)
 mongoose.connect(process.env.DB_URI, { dbName: "demo_db"})
   .then(() => {
     console.log("connected to db");
-    app.listen(4000, "localhost", () => console.log("run 4000"))
+    app.listen(4000, () => console.log("run 4000"))
   })
   .catch((err) => {
     console.log(err);
