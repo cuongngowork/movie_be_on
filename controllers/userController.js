@@ -29,28 +29,30 @@ const register = async (req, res) => {
     const data = await User.create({ email, password: hashedPassword })
     console.log("data", data)
     handleResponseSuccess(res, 201, "Register successfully", {email: data.email, role: data.role})
-    return
   } catch (error) {
     handleResponseError(res, 500, error.message)
   }
 }
 
 const login = async (req, res) => {
-  console.log("login")
+  console.log("req.body", req.body)
   const { email, password } = req.body
 
   if (!email || !password) {
     handleResponseError(res, 400, 'All fields required');
+    return 
   }
 
   const user = await User.findOne({ email })
   if (!user) {
     handleResponseError(res, 401, 'Incorrect email');
+    return
   }
 
   const isMatch = await bcrypt.compare(password, user.password)
   if (!isMatch) {
     handleResponseError(res, 401, 'Incorrect password');
+    return
   }
 
   try {
@@ -62,7 +64,7 @@ const login = async (req, res) => {
 }
 
 const logout = (req, res) => {
-  // maybe delete fresh token he
+  // maybe delete refresh token in server
   res.send('logout success')
 }
 

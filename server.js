@@ -14,10 +14,10 @@ app.use("/api/movies", movieRoutes)
 app.use("/api/auth", userRoutes)
 
 // Địa chỉ của MongoDB, thay thế 'mongodb://localhost:27017' bằng địa chỉ của cơ sở dữ liệu MongoDB của bạn
-// const uri = 'mongodb://127.0.0.1:27017/demo_db';
+// const uri = 'mongodb://127.0.0.1:27017';
 
 // Tên của cơ sở dữ liệu
-const dbName = 'demo_db';
+// const dbName = 'demo_db';
 
 // Kết nối tới MongoDB
 // mongoose.connect(uri)
