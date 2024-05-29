@@ -10,8 +10,8 @@ app.use(cors());
 app.use(express.json())
 dotenv.config()
 
-app.use("/api/movies", movieRoutes)
-app.use("/api/auth", userRoutes)
+app.use("/api/v1/movies", movieRoutes)
+app.use("/api/v1/auth", userRoutes)
 
 // Địa chỉ của MongoDB, thay thế 'mongodb://localhost:27017' bằng địa chỉ của cơ sở dữ liệu MongoDB của bạn
 // const uri = 'mongodb://127.0.0.1:27017';
