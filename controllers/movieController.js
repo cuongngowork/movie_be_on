@@ -11,6 +11,21 @@ const getMovies = async (req, res) => {
   }
 }
 
+const getMovieById = async (req, res) => {
+  const { id } = req.params
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    handleResponseError(res, 400, "Invalid movie id")
+    return
+  }
+  const checkMovieInDb = await Movie.findById(id)
+  if (!checkMovieInDb) {
+    handleResponseError(res, 404, "Movie not found")
+    return
+  }
+  handleResponseSuccess(res, 200, "Get movie successfully", { checkMovieInDb })
+}
+
+
 const createNewMovie = async (req, res) => {
   const { title, year, poster } = req.body;
   if (!title || !year || !poster) {
@@ -74,4 +89,4 @@ const deleteMovie = async (req, res) => {
   }
 }
 
-export { getMovies, createNewMovie, updateMovie, deleteMovie }
+export { getMovies, getMovieById, createNewMovie, updateMovie, deleteMovie }
