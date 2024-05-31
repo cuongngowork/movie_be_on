@@ -22,8 +22,8 @@ const register = async (req, res) => {
     return
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+  const saltRound = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, saltRound);
 
   try {
     const data = await User.create({ email, password: hashedPassword })
@@ -57,7 +57,7 @@ const login = async (req, res) => {
 
   try {
     const accessToken = generateAccessToken(user)
-    handleResponseSuccess(res, 200, "Login successfully", { email, accessToken })
+    handleResponseSuccess(res, 200, "Login successfully", { email, role: user.role, accessToken })
   } catch (error) {
     handleResponseError(res, 500, error.message)
   }
