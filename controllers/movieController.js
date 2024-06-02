@@ -22,7 +22,7 @@ const getMovieById = async (req, res) => {
     handleResponseError(res, 404, "Movie not found")
     return
   }
-  handleResponseSuccess(res, 200, "Get movie successfully", { checkMovieInDb })
+  handleResponseSuccess(res, 200, "Get movie successfully", { ...checkMovieInDb })
 }
 
 
