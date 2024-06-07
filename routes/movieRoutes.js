@@ -5,6 +5,13 @@ const router = express.Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Movie
+ *   description: Operations related to movies
+ */
+
+/**
+ * @swagger
  *  components:
  *    schemas:
  *      Movie:
@@ -38,6 +45,7 @@ const router = express.Router();
  *   get:
  *     summary: Get movies
  *     description: This API is used to get movies
+ *     tags: [Movie]
  *     responses:
  *       200:
  *         description: Successful response
@@ -57,6 +65,7 @@ router.get('/', auth, getMovies)
  *   get:
  *     summary: Get movie detail
  *     description: This API is used to get movie detail
+ *     tags: [Movie]
  *     parameters:
  *        - in: path
  *          name: id
@@ -81,6 +90,7 @@ router.get('/:id', auth, getMovieById)
  *   post:
  *     summary: Create a new movie
  *     description: This API is used to create a new movie
+ *     tags: [Movie]
  *     requestBody:
  *        required: true
  *        content:
@@ -105,6 +115,7 @@ router.post('/', auth, authAdmin, createNewMovie)
  *   put:
  *     summary: Update a movie
  *     description: This API is used to update a movie
+ *     tags: [Movie]
  *     parameters:
  *        - in: path
  *          name: id
@@ -136,6 +147,7 @@ router.put('/:id', auth, authAdmin, updateMovie)
  *   delete:
  *     summary: Delete a movie
  *     description: This API is used to delete a movie
+ *     tags: [Movie]
  *     parameters:
  *        - in: path
  *          name: id

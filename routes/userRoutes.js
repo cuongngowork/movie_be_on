@@ -5,6 +5,13 @@ const router = express.Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: User
+ *   description: Operations related to users
+ */
+
+/**
+ * @swagger
  *  components:
  *    schemas:
  *      User:
@@ -29,8 +36,9 @@ const router = express.Router();
  * @swagger
  * /auth/register:
  *     post:
- *       summary: Register a new account
+ *       summary: Register
  *       description: This API is used to register a new account
+ *       tags: [User]
  *       requestBody:
  *        required: true
  *        content:
@@ -54,6 +62,7 @@ router.post('/register', register)
  *   post:
  *     summary: Login
  *     description: This API is used to login account
+ *     tags: [User]
  *     requestBody:
  *        required: true
  *        content:
@@ -75,8 +84,9 @@ router.post('/login', login)
  * @swagger
  * /auth/logout:
  *   post:
- *     summary: Logout route
- *     description: Return  a user profile
+ *     summary: Logout
+ *     description: This API is used to logout account
+ *     tags: [User]
  *     responses:
  *       200:
  *         description: Successful response
