@@ -5,76 +5,144 @@ const router = express.Router();
 
 /**
  * @swagger
- * /:
+ *  components:
+ *    schemas:
+ *      Movie:
+ *        type: object
+ *        properties:
+ *          _id: 
+ *            type: string
+ *          title: 
+ *            type: string
+ *          year: 
+ *            type: string
+ *          poster: 
+ *            type: string
+ *          __v: 
+ *            type: number
+ *      MovieBodyRequest:
+ *        type: object
+ *        properties:
+ *          title: 
+ *            type: string
+ *          year: 
+ *            type: string
+ *          poster: 
+ *            type: string
+ */
+
+
+/**
+ * @swagger
+ * /movies:
  *   get:
- *     summary: Get movies route
- *     description: Return movies
+ *     summary: Get movies
+ *     description: This API is used to get movies
  *     responses:
  *       200:
  *         description: Successful response
  *         content:
  *           application/json:
  *             schema:
- *               type: string
+ *               type: array
+ *               items:
+ *                  $ref: '#components/schemas/Movie'
  */
 router.get('/', auth, getMovies)
 
 
 /**
  * @swagger
- * /{id}:
+ * /movies/{id}:
  *   get:
- *     summary: Get movie detail route
- *     description: Return movies
+ *     summary: Get movie detail
+ *     description: This API is used to get movie detail
+ *     parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: String ID required
+ *          schema: 
+ *            type: string
  *     responses:
  *       200:
  *         description: Successful response
  *         content:
  *           application/json:
  *             schema:
- *               type: string
+ *                $ref: '#components/schemas/Movie'
  */
 router.get('/:id', auth, getMovieById)
 
+
 /**
  * @swagger
- * /:
+ * /movies:
  *   post:
- *     summary: Create new movie route
- *     description: Return movies
+ *     summary: Create a new movie
+ *     description: This API is used to create a new movie
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/MovieBodyRequest'
  *     responses:
  *       200:
  *         description: Successful response
  *         content:
  *           application/json:
  *             schema:
- *               type: string
+ *               $ref: '#components/schemas/Movie'
  */
 router.post('/', auth, authAdmin, createNewMovie)
 
 
+
 /**
  * @swagger
- * /{id}:
+ * /movies/{id}:
  *   put:
- *     summary: Update movies route
- *     description: Return movies
+ *     summary: Update a movie
+ *     description: This API is used to update a movie
+ *     parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: String ID required
+ *          schema: 
+ *            type: string
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/MovieBodyRequest' 
  *     responses:
  *       200:
  *         description: Successful response
  *         content:
  *           application/json:
  *             schema:
- *               type: string
+ *               $ref: '#components/schemas/Movie'
  */
 router.put('/:id', auth, authAdmin, updateMovie)
 
+
+
 /**
  * @swagger
- * /{id}:
+ * /movies/{id}:
  *   delete:
- *     summary: Update movies route
- *     description: Return movies
+ *     summary: Delete a movie
+ *     description: This API is used to delete a movie
+ *     parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: String ID required
+ *          schema: 
+ *            type: string 
  *     responses:
  *       200:
  *         description: Successful response
