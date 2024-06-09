@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, logout } from '../controllers/userController.js';
+import { register, login, loginGoogle, logout } from '../controllers/userController.js';
 import { auth } from '../middlewares/auth.js';
 const router = express.Router();
 
@@ -78,6 +78,8 @@ router.post('/register', register)
  *               $ref: '#components/schemas/User'
  */
 router.post('/login', login)
+
+router.post('/login-google', loginGoogle)
 
 
 /**

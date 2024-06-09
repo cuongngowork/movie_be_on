@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import 'dotenv/config.js'
 import jwt from 'jsonwebtoken'
 import { handleResponseError, handleResponseSuccess } from '../utils/response.js';
+import admin from '../config/firebase-config.js';
 
 const generateAccessToken = (user) => {
   return jwt.sign({ user }, process.env.SECRET, {expiresIn: "1d"})
@@ -63,10 +64,46 @@ const login = async (req, res) => {
   }
 }
 
+// login and register in the case using gg account
+const loginGoogle = async (req, res) => {
+  const { email, idToken } = req.body
+
+  // check idToken is correct or not
+  try {
+    const decodeValue = await admin.auth().verifyIdToken(idToken)
+
+    // check email in decodeValue
+    if (decodeValue.email === email) {
+      const existEmail = await User.findOne({ email })
+      console.log("existEmail", existEmail)
+
+      // user have logged in 
+      if (existEmail) {
+        const accessToken = generateAccessToken(existEmail)
+        handleResponseSuccess(res, 200, "Login successfully", { email, role: existEmail.role, accessToken })
+        return
+      }
+      // user have not logged in
+      else {
+        const newUser = await User.create({ email })
+        console.log("newUser", newUser)
+        const accessToken = generateAccessToken(newUser)
+        handleResponseSuccess(res, 200, "Login successfully", { email, role: newUser.role, accessToken })
+        return
+      }
+    } else {
+      handleResponseError(res, 400, 'Email verified failed')
+      return
+    }
+  } catch (error) {
+    handleResponseError(res, 500, error.message)
+  }
+}
+
 const logout = (req, res) => {
   // maybe delete refresh token in server
   res.send('logout success')
 }
 
 
-export { register, login, logout }  
+export { register, login, loginGoogle, logout }  
