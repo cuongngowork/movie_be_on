@@ -25,9 +25,9 @@ app.use(express.json())
 dotenv.config()
 
 // Set up GraphQL Playground for easier testing
-// app.get('/playground', (req, res) => {
-//   res.send(renderPlaygroundPage({ endpoint: '/graphql' }));
-// });
+app.get('/playground', (req, res) => {
+  res.send(renderPlaygroundPage({ endpoint: '/graphql' }));
+});
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/v1/movies", movieRoutes)
@@ -67,7 +67,7 @@ const server = new ApolloServer({
 await server.start();
 
 app.use(
-  '/graphql',
+  '/graphql', 
   cors(),
   express.json(),
   expressMiddleware(server, {

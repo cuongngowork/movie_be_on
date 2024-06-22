@@ -10,14 +10,14 @@ const generateAccessToken = (user) => {
 
 const resolvers = {
   Query: {
-    getMovies: async (_, __, { user }) => {
+    getMovies: async (parent, __, { user }) => {
       if (!user) {
         throw new Error('You are not authenticated!');
       }
       const movies = await Movie.find()
       return movies
     },
-    getMovieById: async (_, { id }, { user }) => { 
+    getMovieById: async (parent, { id }, { user }) => { 
       if (!user) {
         throw new Error('You are not authenticated!')
       }
