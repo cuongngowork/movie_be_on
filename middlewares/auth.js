@@ -45,3 +45,14 @@ export const authAdmin = async (req, res, next) => {
     handleResponseError(res, 500, error.message)
   }
 }
+
+export const getUser = (token) => {
+  try {
+    if (token) {
+      return jwt.verify(token, process.env.SECRET);
+    }
+    return null;
+  } catch (err) {
+    return null;
+  }
+};
