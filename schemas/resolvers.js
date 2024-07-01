@@ -3,10 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/UserModel.js';
 import mongoose from 'mongoose';
 import Movie from '../models/MovieModel.js';
-
-const generateAccessToken = (user) => {
-  return jwt.sign({ user }, process.env.SECRET, { expiresIn: "1d" })
-}
+import { generateAccessToken } from '../controllers/userController.js';
 
 const resolvers = {
   Query: {
@@ -33,7 +30,7 @@ const resolvers = {
       console.log("checkMovieInDb", checkMovieInDb)
       console.log("checkMovieInDb _doc", checkMovieInDb._doc)
 
-      return { ...checkMovieInDb }
+      return checkMovieInDb
     }
   },
   Mutation: {
@@ -83,6 +80,7 @@ const resolvers = {
     },
 
     logout: async (_, __, { user }) => {
+      console.log("user in logout", user)
       if (!user) {
         throw new Error('You are not authenticated!');
       }
@@ -109,6 +107,7 @@ const resolvers = {
     },
     updateMovie: async (_, { id, title, year, poster }, { user }) => {
       console.log("user in update movie", user)
+      console.log("id updateMovie", id)
       console.log(!user || user.user.role !== "admin")
       if (!user) {
         throw new Error('You are not authenticated! first');
@@ -125,13 +124,14 @@ const resolvers = {
       }
       try {
         const checkMovieInDb = await Movie.findById(id)
-        console.log("checkMovieInDb", checkMovieInDb)
+        console.log("checkMovieInDb update", checkMovieInDb)
         if (!checkMovieInDb) {
           throw new Error('Movie id not found')
         }
         const updatedMovie = await checkMovieInDb.updateOne({ title, year, poster })
         console.log("updatedMovie", updatedMovie)
-        return { ...checkMovieInDb, id, title, year, poster}
+        console.log("id", id)
+        return { _id: id, title, year, poster }
       } catch (error) {
         throw new Error(error.message)
       }

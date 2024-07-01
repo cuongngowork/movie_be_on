@@ -4,14 +4,14 @@ import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
   type User {
-    id: ID!
+    _id: ID
     email: String!
     role: String!
     token: String
   }
 
   type Movie {
-    id: ID!
+    _id: ID
     title: String
     year: String
     poster: String
@@ -37,7 +37,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): User
     logout: LogoutResponse 
     createNewMovie(title: String!, year: String!, poster: String!): Movie
-    updateMovie(id: ID!, title: String!, year: String!, poster: String!): Movie
+    updateMovie(id: ID!, title: String, year: String, poster: String): Movie
     deleteMovie(id: ID!): DeleteMovieResponse
   }
 `;

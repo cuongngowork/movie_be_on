@@ -16,8 +16,8 @@ import connectDB from './config/db.js';
 import { getUser } from './middlewares/auth.js';
 import typeDefs from './schemas/typeDefs.js';
 import resolvers from './schemas/resolvers.js';
-import {ApolloServer} from '@apollo/server';
-import {expressMiddleware} from '@apollo/server/express4';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
 
 const app = express();
 app.use(cors());
@@ -25,10 +25,15 @@ app.use(express.json())
 dotenv.config()
 
 // Set up GraphQL Playground for easier testing
-app.get('/playground', (req, res) => {
-  res.send(renderPlaygroundPage({ endpoint: '/graphql' }));
-});
+// app.get('/playground', (req, res) => {
+//   res.send(renderPlaygroundPage({ endpoint: '/graphql' }));
+// });
 
+app.get('/api/welcome', (req, res) => {
+  res.status(200).send({
+    message: "Welcome to test api"
+  })
+})
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/v1/movies", movieRoutes)
 app.use("/api/v1/auth", userRoutes)
@@ -56,27 +61,32 @@ connectDB();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
-    const token = req.headers.authorization || '';
-    const user = getUser(token);
-    return { user };
-  },
+  // context: ({ req }) => {
+  //   const token = req.headers.authorization.split(' ')[1];
+  //   const user = getUser(token);
+  //   return { user };
+  // },
 });
-
 
 await server.start();
 
 app.use(
-  '/graphql', 
+  '/graphql',
   cors(),
   express.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => ({
-      user: getUser(req.headers.authorization),
-    }),
+    context: async ({ req }) => {
+      // console.log("req1", req.headers)
+      const token = req.headers.authorization.split(' ')[1]
+      return ({
+        user: getUser(token),
+      })
+    },
   }),
 );
 
 app.listen({ port: 4000 }, () =>
   console.log(`Server ready at http://localhost:4000/graphql`)
 );
+
+export default app;

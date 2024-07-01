@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken'
 import { handleResponseError, handleResponseSuccess } from '../utils/response.js';
 import admin from '../config/firebase-config.js';
 
-const generateAccessToken = (user) => {
-  return jwt.sign({ user }, process.env.SECRET, {expiresIn: "1d"})
+export const generateAccessToken = (user) => {
+  return jwt.sign({ user }, process.env.SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
 }
 
 const register = async (req, res) => {

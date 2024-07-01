@@ -6,7 +6,7 @@ console.log("NODE_ENV", process.env.NODE_ENV)
 async function loadServiceAccount() {
   let serviceAccount;
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     serviceAccount = await import('./serviceAccount.json', {
       assert: { type: 'json' }
     });
@@ -14,8 +14,6 @@ async function loadServiceAccount() {
     serviceAccount = await import('/etc/secrets/serviceAccount.json', {
       assert: { type: 'json' }
     });
-  } else {
-    throw new Error('NODE_ENV not set to development or production');
   }
 
   return serviceAccount.default;
